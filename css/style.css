@@ -1,1 +1,35 @@
 /* TODO: Make it awesome */
+html{
+    background-color: rgba(136, 138, 133, 0.5);
+background-position: bottom;
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;
+
+    background-image: url(https://png.pngtree.com/thumb_back/fw800/back_our/20190619/ourmid/pngtree-trial-business-shopping-advertising-poster-background-image_138805.jpg);
+}  
+h1{
+    text-align: center;
+    font-family: 'Pacifico', cursive;
+font-size: 60px;
+background-image: url(https://img.freepik.com/free-vector/background-watercolor-texture_122380-11.jpg?size=626&ext=jpg);
+
+}
+header nav{
+    text-align: center;
+    font-family: 'Pacifico', cursive;
+font-size: 20px;
+display: block;
+}
+div{
+    text-align: center;
+    font-family: 'Pacifico', cursive;
+font-size: 30px;
+margin: 20px;
+}
+footer{
+    text-align: center;
+    font-family: 'Pacifico', cursive;
+font-size: 10px;
+margin bottom: 0px;
+}

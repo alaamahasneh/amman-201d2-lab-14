@@ -1,68 +1,60 @@
-/* global Cart */
+/* global Product, Cart */
 'use strict';
-
-// Create an event listener so that when the delete link is clicked, the removeItemFromCart method is invoked.
-var table = document.getElementById('cart');
-table.addEventListener('click', removeItemFromCart);
-var cart;
-
-function loadCart() {
-  var cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-  cart = new Cart(cartItems);
+// Set up an empty cart for use on this page.
+var cart = new Cart([]);
+// On screen load, we call this method to put all of the busmall options
+// (the things in the Product.allProducts array) into the drop down list.
+function populateForm() {
+  //TODO: Add an <option> tag inside the form's select for each product
+  var selectElement = document.getElementById('items');
+  for (var i in Product.allProducts) {
+    var option = document.createElement('option');
+    option.value = Product.allProducts[i].name;
+    option.textContent = Product.allProducts[i].name;
+    selectElement.appendChild(option);
+  }
 }
-
-// Make magic happen --- re-pull the Cart, clear out the screen and re-draw it
-function renderCart() {
-  loadCart();
-  clearCart();
-  showCart();
+// When someone submits the form, we need to add the selected item to the cart
+// object, save the whole thing back to local storage and update the screen
+// so that it shows the # of items in the cart and a quick preview of the cart itself.
+function handleSubmit(event) {
+  // TODO: Prevent the page from reloading
+  event.preventDefault();
+  // Do all the things ...
+  
+  addSelectedItemToCart();
+  cart.saveToLocalStorage();
+  cart.updateCounter();
+  updateCounter();
+  updateCartPreview();
 }
-
-// TODO: Remove all of the rows (tr) in the cart table (tbody)
-function clearCart() {
-  var tableDelet= document.getElementById('cart');
-  tableDelet.deletRow(table.row.length-1);
+// TODO: Add the selected item and quantity to the cart
+function addSelectedItemToCart() {
+  var item = document.getElementById('items').value;
+  var quantity = document.getElementById('quantity').value;
+  cart.addItem(item, quantity);
+  // TODO: suss out the item picked from the select list
+  // TODO: get the quantity
+  // TODO: using those, add one item to the Cart
 }
-
-// TODO: Fill in the <tr>'s under the <tbody> for each item in the cart
-function showCart() {
-
-  for (i = 0; i < cart.length; i++) {
-      var th = document.createElement('TH')
-      th.appendChild(document.createTextNode(cart[i]));
-      tr.appendChild(th);
-  // TODO: Find the table body
-var tableBody= document.getElementById('cart');
-  // TODO: Iterate over the items in the cart
-  // TODO: Create a TR
-  var tr = document.createElement('TR');
-  tableBody.appendChild(tr);
-
-  // TODO: Create a TD for the delete link, quantity,  and the item
-  var tdDelete= document.createElement('TD');
-
-  tr.appendChild(tdDelete);
-  vat tdQuantity= document.createElement('TD')
-  tr.appendChild(tdQuantity);
-  var tdItem= document.createElement('TD');
-  tr.appendChild(tdItem);
-  // TODO: Add the TR to the TBODY and each of the TD's to the TR
-
+// TODO: Update the cart count in the header nav with the number of items in the Cart
+function updateCounter() {}
+// TODO: As you add items into the cart, show them (item & quantity) in the cart preview div
+function updateCartPreview() {
+  // TODO: Get the item and quantity from the form
+  // TODO: Add a new element to the cartContents div with that information
+  var item = document.getElementById('items').value;
+  var quantity = document.getElementById('quantity').value;
+  var cart = document.getElementById('cartContents');
+  var element = document.createElement('div');
+  element.textContent = quantity + ': ' + item;
+  cart.appendChild(element);
 }
-
-function removeItemFromCart(event) {
-  // table.removeEventListener('click', removeItemFromCart);
-
-  // TODO: When a delete link is clicked, use cart.removeItem to remove the correct item
-  cart.removeItem(cartItems);
-  // TODO: Save the cart back to local storage
-  var cartString=JSON.stringify(this.items);
-  localStorage.setItem('backToLocal',cartString);
-  // TODO: Re-draw the cart table
-////no need to repeat every thing , just call the function /////
-showCart();
-
-}
-
-// This will initialize the page and draw the cart on screen
-renderCart();
+// Set up the "submit" event listener on the form.
+// This is the trigger for the app. When a user "submits" the form, it will
+// Call that handleSubmit method above and kick off the whole process
+var catalogForm = document.getElementById('catalog');
+catalogForm.addEventListener('submit', handleSubmit);
+// Before anything else of value can happen, we need to fill in the select
+// drop down list in the form.
+populateForm();
